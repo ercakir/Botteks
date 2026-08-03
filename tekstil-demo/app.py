@@ -1375,15 +1375,19 @@ with st.sidebar:
     st.write("---")
     
     # --- SESLİ KOMUT ASİSTANI ---
-    from audio_recorder_streamlit import audio_recorder
-    st.subheader("🎙️ Sesli Komut Asistanı")
-    st.caption("Sesli soru sormak için mikrofona tıklayıp konuşun:")
-    audio_bytes = audio_recorder(
-        text="",
-        recording_color="#ef4444",
-        neutral_color="#3b82f6",
-        icon_size="2x"
-    )
+    try:
+        from audio_recorder_streamlit import audio_recorder
+        st.subheader("🎙️ Sesli Komut Asistanı")
+        st.caption("Sesli soru sormak için mikrofona tıklayıp konuşun:")
+        audio_bytes = audio_recorder(
+            text="",
+            recording_color="#ef4444",
+            neutral_color="#3b82f6",
+            icon_size="2x"
+        )
+    except Exception as e:
+        audio_bytes = None
+        st.info("💡 Sesli komut asistanı devre dışı.")
     if audio_bytes:
         import hashlib
         audio_hash = hashlib.md5(audio_bytes).hexdigest()
