@@ -12,6 +12,13 @@ import re
 # ==========================================
 # 0. DATABASE CONNECTION POOLING & FALLBACK ENGINE
 # ==========================================
+# Auto-initialize SQLite demo database on startup for cloud deployments
+try:
+    from build_sqlite_fallback import create_sqlite_demo_db
+    create_sqlite_demo_db()
+except Exception as _db_err:
+    print("Auto create sqlite demo db info:", _db_err)
+
 @st.cache_resource
 def get_db_pool():
     try:
