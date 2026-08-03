@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Üniteks Dijital Anket & Geri Bildirim Platformu — Sunum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #061523;
+      --bg-card: rgba(10, 40, 59, 0.95);
+      --accent-cyan: #00D2D3;
+      --accent-blue: #2563EB;
+      --accent-green: #10B981;
+      --text-main: #ffffff;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* Slide Container */
+    .presentation-container {
+      width: 100%;
+      max-width: 1000px;
+      height: 600px;
+      position: relative;
+      background: linear-gradient(145deg, #0A283B 0%, #061928 100%);
+      border: 1.5px solid rgba(0, 210, 211, 0.3);
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 210, 211, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Slide Header */
+    .slide-header {
+      padding: 20px 36px;
+      background: rgba(0, 0, 0, 0.25);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo h1 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-tag {
+      background: rgba(0, 210, 211, 0.15);
+      color: var(--accent-cyan);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 210, 211, 0.3);
+    }
+
+    .slide-counter {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px 14px;
+      border-radius: 12px;
+    }
+
+    /* Slide Body */
+    .slide-body {
+      flex: 1;
+      padding: 40px 48px;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+
+    .slide-body.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Content Typography */
+    .slide-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 18px 20px;
+      transition: all 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 210, 211, 0.05);
+    }
+
+    .feature-card h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Controls Bar */
+    .slide-footer {
+      padding: 16px 36px;
+      background: rgba(0, 0, 0, 0.3);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify: space-between;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, #00D2D3 0%, #2563EB 100%);
+      color: #ffffff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0, 210, 211, 0.3);
+      transition: all 0.2s;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px rgba(0, 210, 211, 0.5);
+    }
+
+    .action-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .action-link:hover {
+      color: #ffffff;
+      border-color: var(--accent-cyan);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="presentation-container">
+    
+    <!-- Header Bar -->
+    <div class="slide-header">
+      <div class="brand-logo">
+        <h1>ÜNİTEKS</h1>
+        <span class="brand-tag">DİJİTAL ANKET PLATFORMU</span>
+      </div>
+      <div class="slide-counter" id="slideCounter">1 / 5</div>
+    </div>
+
+    <!-- SLIDE 1: KAPAK -->
+    <div class="slide-body active" id="slide-1">
+      <div style="text-align: center; max-width: 700px; margin: 0 auto;">
+        <span style="background: rgba(0, 210, 211, 0.15); color: #00D2D3; font-size: 0.85rem; font-weight: 800; padding: 6px 16px; borderRadius: 20px; border: 1px solid rgba(0, 210, 211, 0.3);">
+          YÖNETİM & ÇALIŞAN SUNUMU
+        </span>
+        <h2 class="slide-title" style="font-size: 2.8rem; margin-top: 16px;">
+          Üniteks İç Geri Bildirim & Anket Platformu
+        </h2>
+        <p class="slide-subtitle" style="font-size: 1.15rem; margin-bottom: 30px;">
+          "Design-Driven. System-Oriented. Brand-Focused."
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+          5 Ana Departmanın iç süreçlerini, çalışan memnuniyetini ve dijital dönüşüm hızını anlık verilerle ölçen pratik dijital platform.
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: AMAC & İHTİYAÇ -->
+    <div class="slide-body" id="slide-2">
+      <h2 class="slide-title">🎯 Neden Bu Platformu Kurduk?</h2>
+      <p class="slide-subtitle">Sıfır Kağıt, Tam Dijitalleşme ve Hızlı Yanıtlar</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>🚀 Anlık Gerçek Zamanlı Veri</h4>
+          <p>Anket doldurulduğu anda sonuçlar anında hesaplanır ve yönetici ekranına otomatik iletilir.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🏢 Departmana Özel Sorular</h4>
+          <p>Genel sorular yerine Tasarım, Üretim, Ar-Ge, Dijitalleşme ve Dış Ticaret'in kendi iş süreçlerine dokunan sorular.</p>
+        </div>
+        <div class="feature-card">
+          <h4>⏱️ 2 Dakikada Kolay Doldurma</h4>
+          <p>Kullanıcıyı yormayan 1-5 puanlık pratik derecelendirme ve hızlı alt başlık filtreleri.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🍃 %100 Yeşil & Sürdürülebilir</h4>
+          <p>Kağıt israfını tamamen ortadan kaldıran, şirketimizin çevre vizyonuna tam uyumlu dijital sistem.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: ÖNE ÇIKAN ÖZELLİKLER 1 -->
+    <div class="slide-body" id="slide-3">
+      <h2 class="slide-title">✨ Öne Çıkan Güçlü Özellikler</h2>
+      <p class="slide-subtitle">Kullanıcı Dostu ve Akıllı İş Akışı</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>🤖 Yapay Zeka (AI) Soru Asistanı</h4>
+          <p>Yönetici kutucuğa iki kelime yazar (*"clo3d numune"*), AI Ajanı (qwen3.5-35b) soruyu kurumsal dilde saniyeler içinde otomatik üretir.</p>
+        </div>
+        <div class="feature-card">
+          <h4>📱 Mobil Karekod (QR Code) Erişimi</h4>
+          <p>Departman kutularının altında o alana özel karekodlar yer alır. Cep telefonu kamerasıyla okutup anında anket başlatılabilir.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🔔 Yöneticiye Anlık Bildirim</h4>
+          <p>Çalışan anketi tamamladığında yöneticiye *"Burak Kaya Tasarım anketini tamamladı"* bildirimi düşer.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🔐 Çift Kademeli Güvenlik</h4>
+          <p>Kullanıcı ve Yönetici girişleri ayrıdır. Anket sonuçları ve analizler **sadece yönetici girişi yapıldığında görünür**.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: ANKET DETAYI & PDF RAPORU -->
+    <div class="slide-body" id="slide-4">
+      <h2 class="slide-title">📊 Raporlama ve Kurumsal Çıktı</h2>
+      <p class="slide-subtitle">Detaylı İnceleme & Tek Tıkla PDF</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>🔍 Soru Soru Rapor İnceleme</h4>
+          <p>Yönetici gelen bildirimdeki *"Raporu İncele"* butonuna tıklayarak çalışanın 15 soruya verdiği tüm puanları ve özel önerileri ekranda görür.</p>
+        </div>
+        <div class="feature-card">
+          <h4>📄 Ankete Özel PDF Dönüştürücü</h4>
+          <p>İncelenen anketi tek tıkla resmi Üniteks logosu, onay mühürleri ve puanlarıyla resmi A4 PDF raporu olarak indirir.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🏷️ 5 Alt Başlık Sekmesi</h4>
+          <p>Trend & Vizyon, Dijitalleşme, Sürdürülebilirlik gibi sekmelerle her alt başlıkta tam 3'er soru filtrelenir.</p>
+        </div>
+        <div class="feature-card">
+          <h4>📈 Görsel Grafik Analizi</h4>
+          <p>Radar grafikleri ve ortalama bar göstergeleri ile şirket gelişim alanları anında tespit edilir.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: KAZANÇLAR & ÖZET -->
+    <div class="slide-body" id="slide-5">
+      <h2 class="slide-title" style="text-align: center;">💡 Şirketimize Sağladığı Kazançlar</h2>
+      <p class="slide-subtitle" style="text-align: center;">Hızlı, Şeffaf ve Veriye Dayalı Karar Mekanizması</p>
+
+      <div style="display: flex; gap: 16px; justify-content: center; margin-top: 20px;">
+        <div class="feature-card" style="text-align: center; flex: 1;">
+          <h3 style="font-size: 2rem; color: #10B981; margin-bottom: 6px;">%95</h3>
+          <h4>Zaman Tasarrufu</h4>
+          <p>Anket hazırlama ve toplama süresi günlerden dakikalara indi.</p>
+        </div>
+        <div class="feature-card" style="text-align: center; flex: 1;">
+          <h3 style="font-size: 2rem; color: #00D2D3; margin-bottom: 6px;">100%</h3>
+          <h4>Veri Güvenliği</h4>
+          <p>Yönetici kilitli özel görünürlük ve rol bazlı yetkilendirme.</p>
+        </div>
+        <div class="feature-card" style="text-align: center; flex: 1;">
+          <h3 style="font-size: 2rem; color: #2563EB; margin-bottom: 6px;">5</h3>
+          <h4>Stratejik Departman</h4>
+          <p>Tasarım, Üretim, Ar-Ge, Dijitalleşme ve Dış Ticaret entegre.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Controls -->
+    <div class="slide-footer">
+      <div class="action-links">
+        <a href="/" class="action-link">🌐 Anket Uygulamasına Dön</a>
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Önceki Slayt</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Sonraki Slayt ▶</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 5;
+
+    function changeSlide(direction) {
+      document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+      currentSlide += direction;
+
+      if (currentSlide < 1) currentSlide = 1;
+      if (currentSlide > totalSlides) currentSlide = totalSlides;
+
+      document.getElementById(`slide-${currentSlide}`).classList.add('active');
+      document.getElementById('slideCounter').innerText = `${currentSlide} / ${totalSlides}`;
+
+      document.getElementById('prevBtn').disabled = currentSlide === 1;
+      document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+    }
+
+    document.getElementById('prevBtn').disabled = true;
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        if (currentSlide < totalSlides) changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        if (currentSlide > 1) changeSlide(-1);
+      }
+    });
+  </script>
+</body>
+</html>

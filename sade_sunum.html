@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Veri Asistanı - Geliştirilen Özellikler Sunumu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        .slide-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            transform: scale(0.96);
+            padding: 50px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: radial-gradient(circle at 20% 20%, rgba(30, 58, 138, 0.4) 0%, rgba(15, 23, 42, 1) 85%);
+        }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+        h1.hero-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 18px;
+            line-height: 1.25;
+        }
+        h2.slide-header {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(56, 189, 248, 0.25);
+            padding-bottom: 12px;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* Simple Feature Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 22px;
+            margin-top: 10px;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .card-icon { font-size: 2rem; margin-bottom: 12px; }
+        .card-title { font-size: 1.25rem; font-weight: 700; color: #f1f5f9; margin-bottom: 10px; }
+        .card-desc { font-size: 1rem; color: #cbd5e1; line-height: 1.6; }
+
+        /* Chart Visual Component */
+        .chart-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 15px;
+        }
+        .bar-group {
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            height: 150px;
+            padding-top: 20px;
+            border-bottom: 2px solid #475569;
+        }
+        .bar-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .bar {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+        }
+        .bar::after {
+            content: attr(data-val);
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+        .label { font-size: 0.85rem; color: #cbd5e1; font-weight: 600; }
+
+        /* Navigation Controls */
+        .nav-bar {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 10px 24px;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            z-index: 100;
+        }
+        .btn-nav {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .btn-nav:hover { background: #38bdf8; color: #0f172a; border-color: #38bdf8; }
+        .slide-counter { font-size: 0.95rem; font-weight: 600; color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+<div class="slide-container">
+
+    <!-- SLIDE 1 -->
+    <div class="slide active">
+        <span class="badge">💡 SADE VE ANLAŞILIR SUNUM</span>
+        <h1 class="hero-title">Akıllı Veri Asistanı: Yaptığımız Yenilikler</h1>
+        <p class="subtitle">Sisteme kazandırdığımız kullanımı kolaylaştıran 5 temel özellik ve pratik faydaları.</p>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <div class="card-title">Işık Hızında Cevap</div>
+                <div class="card-desc">Sık sorulan sorulara beklemeden, anında görsel yanıtlar alma.</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">🛡️</div>
+                <div class="card-title">Alakasız Soruları Engelleme</div>
+                <div class="card-desc">Şirket verisi dışındaki soruları algılayıp kibarca uyarma.</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔤</div>
+                <div class="card-title">Yazı ve Karakter Düzeltme</div>
+                <div class="card-desc">Bozuk Türkçe harfleri ekrana gelmeden otomatik düzeltme.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+        <h2 class="slide-header">⚡ 1. Özellik: Anında ve Işık Hızında Cevap Motoru</h2>
+        <p class="subtitle">Sorunuzu yazdığınız anda bekleme süresi olmadan doğrudan veriyi ekrana getiriyoruz.</p>
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">🚀 Saniyeden Çok Daha Hızlı</div>
+                <div class="card-desc">"Zara bu ay ne kadar sipariş verdi?" gibi bilinen soruları beklemeden 0.0002 saniyede yanıtlar.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">✍️ Yazım Hatalarını Anlama</div>
+                <div class="card-desc">Harf hatası yapsanız bile ("en cok cıro" yerine "en cok ciro" yazılsa bile) ne demek istediğinizi anlar.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+        <h2 class="slide-header">🛡️ 2. Özellik: Alakasız Soruları Otomatik Engelleme</h2>
+        <p class="subtitle">Sistemi gereksiz yere yormamak ve yanlış yanıt vermemek için akıllı koruma.</p>
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">🎯 Şirket Dışı Soruları Algılama</div>
+                <div class="card-desc">"Hava durumu nasıl?" veya "Maç kaç kaç bitti?" gibi şirket verisiyle alakası olmayan soruları anında tespit eder.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">💬 Nazik Bilgilendirme</div>
+                <div class="card-desc">Boş yere arama yapmaz; kullanıcıya *"Bu bilgi veritabanımızda yok, lütfen şirket verileriyle ilgili soru sorun"* mesajı gösterir.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+        <h2 class="slide-header">🔤 3. Özellik: Bozuk Türkçe Yazıları Otomatik Otomatik Düzeltme</h2>
+        <p class="subtitle">Veritabanından gelen bozuk yazıları ekranda kusursuz Türkçe olarak gösteririz.</p>
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">❌ Eski Görünüm (Bozuk)</div>
+                <div class="card-desc" style="color: #f87171; font-weight: bold;">"Bask??l?? Tshirt" / "Kad??n G??mlek"</div>
+            </div>
+            <div class="card">
+                <div class="card-title">✅ Yeni Görünüm (Kusursuz)</div>
+                <div class="card-desc" style="color: #4ade80; font-weight: bold;">"Baskılı Tshirt" / "Kadın Gömlek"</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+        <h2 class="slide-header">💡 4. Özellik: Otomatik Özet ve Pazar Payı (%) Hesaplama</h2>
+        <p class="subtitle">Tabloları sadece göstermez, en büyük müşteriyi ve yüzde kaç pay aldığını açıklar.</p>
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">🏆 En Büyük Lideri Bulma</div>
+                <div class="card-desc">Satışlarda en çok öne çıkan müşteriyi veya ürünü otomatik olarak tespit eder.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">📊 Yüzdesel Payı Söyleme</div>
+                <div class="card-desc">Örnek: *"En çok ciro getiren Inditex, toplam cironun %38.4'ünü oluşturuyor"* şeklinde hazır özet sunar.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide">
+        <h2 class="slide-header">🎨 5. Özellik: Canlı ve Renkli Grafik Ekranı</h2>
+        <p class="subtitle">Sıkıcı tek renk sütunlar yerine göz alıcı, renkli grafikler ve tek tıkla PDF raporu.</p>
+        <div class="chart-box">
+            <div style="font-size: 1rem; font-weight: 700; color: #38bdf8; margin-bottom: 10px;">📊 Müşterilere Göre Renkli Ciro Dağılımı</div>
+            <div class="bar-group">
+                <div class="bar-col">
+                    <div class="bar" style="height: 90%; background: #ef4444;" data-val="14.9M €"></div>
+                    <div class="label">Inditex</div>
+                </div>
+                <div class="bar-col">
+                    <div class="bar" style="height: 70%; background: #3b82f6;" data-val="10.8M €"></div>
+                    <div class="label">Polonia</div>
+                </div>
+                <div class="bar-col">
+                    <div class="bar" style="height: 68%; background: #10b981;" data-val="10.6M €"></div>
+                    <div class="label">Hennes</div>
+                </div>
+                <div class="bar-col">
+                    <div class="bar" style="height: 65%; background: #f59e0b;" data-val="10.6M €"></div>
+                    <div class="label">Primark</div>
+                </div>
+                <div class="bar-col">
+                    <div class="bar" style="height: 60%; background: #8b5cf6;" data-val="10.0M €"></div>
+                    <div class="label">C&A Mode</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide">
+        <span class="badge">🚀 ÖZET VE SONUÇ</span>
+        <h1 class="hero-title">Verilerinize Ulaşmak Artık Çok Kolay!</h1>
+        <p class="subtitle">Geliştirdiğimiz bu 5 pratik yenilik sayesinde rapor hazırlamak çocuk oyuncağı haline geldi.</p>
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">👌 Sıfır Zorluk</div>
+                <div class="card-desc">WhatsApp'tan mesaj yazar gibi soru sorun.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">📑 Tek Tıkla PDF</div>
+                <div class="card-desc">İstediğiniz zaman raporu indirip yöneticinize gönderin.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Navigation Controls -->
+<div class="nav-bar">
+    <button class="btn-nav" onclick="prevSlide()">❮ Önceki</button>
+    <span class="slide-counter" id="counter">1 / 7</span>
+    <button class="btn-nav" onclick="nextSlide()">Sonraki ❯</button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('counter');
+
+    function updateSlides() {
+        slides.forEach((slide, idx) => {
+            slide.classList.toggle('active', idx === currentSlide);
+        });
+        counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+    }
+
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            updateSlides();
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlides();
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+    });
+</script>
+</body>
+</html>

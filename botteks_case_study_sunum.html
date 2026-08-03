@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botteks Akıllı BI & Analiz Platformu - Genel Sunumu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #09132e;
+            color: #f8fafc;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        .slide-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(0.98);
+            padding: 40px 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: radial-gradient(circle at 50% 30%, #0d1a3a 0%, #070e22 100%);
+        }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        /* TYPOGRAPHY & ACCENTS */
+        .title-accent-bar {
+            width: 70px;
+            height: 4px;
+            background: #38bdf8;
+            border-radius: 2px;
+            margin: 0 auto 24px auto;
+        }
+        h1.hero-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.15;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        h1.hero-title span { color: #38bdf8; }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            text-align: center;
+            max-width: 820px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        h2.slide-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        h2.slide-title span { color: #38bdf8; }
+        .slide-subtitle {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        /* THREE CARDS GRID */
+        .three-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 35px 28px;
+            transition: all 0.3s ease;
+        }
+        .feature-icon-box { font-size: 2.4rem; margin-bottom: 16px; }
+        .feature-card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+        .feature-card-desc { font-size: 0.98rem; color: #94a3b8; line-height: 1.6; }
+
+        /* SPLIT SHOWCASE LAYOUT */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 40px;
+            align-items: center;
+            height: 100%;
+        }
+        .split-content h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+        .split-content h2 span { color: #38bdf8; }
+        .split-desc {
+            font-size: 1.08rem;
+            color: #94a3b8;
+            line-height: 1.7;
+        }
+
+        /* TWO COLUMNS GRAPHIC GRID */
+        .two-cols-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            align-items: center;
+        }
+        .graphic-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 20px;
+        }
+        .card-header-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* EXCEL TABLE MOCK */
+        .excel-table-mock {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            background: #ffffff;
+            color: #0f172a;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .excel-table-mock th {
+            background: #1e3a8a !important;
+            color: #ffffff !important;
+            padding: 10px 14px;
+            font-weight: 700;
+            text-align: left;
+            border: 1px solid #1e3a8a;
+            font-size: 0.9rem;
+        }
+        .excel-table-mock td {
+            padding: 8px 14px;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+        }
+        .excel-table-mock tr:nth-child(even) td { background: #f8fafc; }
+
+        /* BAR CHART MOCK */
+        .bar-chart-container {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .bar-chart-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+        .bar-chart-flex {
+            display: flex;
+            align-items: flex-end;
+            gap: 14px;
+            height: 160px;
+            padding: 15px 10px 5px 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .bar-col-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        }
+        .bar-fill {
+            width: 85%;
+            border-radius: 4px 4px 0 0;
+        }
+        .bar-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        /* PIE CHART MOCK */
+        .pie-chart-container {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .pie-chart-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+            width: 100%;
+            text-align: left;
+        }
+        .pie-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 14px;
+            font-size: 0.78rem;
+            color: #475569;
+        }
+
+        /* LINE CHART MOCK */
+        .line-chart-container {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .line-chart-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        /* FORECAST CHART MOCK */
+        .forecast-chart-container {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        /* UPGRADED MODERN MODE COMPARISON CARDS (SLIDE 6) */
+        .mode-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1050px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .mode-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        .mode-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .mode-card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mode-pill {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            letter-spacing: 0.5px;
+        }
+        .pill-blue { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .pill-green { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .mode-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .mode-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+        .mode-icon {
+            font-size: 1.2rem;
+            line-height: 1;
+            margin-top: 2px;
+        }
+        .mode-item strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* NAVIGATION CONTROLS */
+        .nav-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 8px 24px;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            z-index: 100;
+        }
+        .btn-nav {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            padding: 6px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .btn-nav:hover { background: #38bdf8; color: #09132e; border-color: #38bdf8; }
+        .slide-counter { font-size: 0.95rem; font-weight: 600; color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+<div class="slide-container">
+
+    <!-- SLIDE 1: KAPAK -->
+    <div class="slide active">
+        <div class="title-accent-bar"></div>
+        <h1 class="hero-title">Botteks Akıllı BI Platformu<br><span>Genel Özellikler Sunumu</span></h1>
+        <p class="hero-subtitle">Doğal dille veri analizi, otomatik grafik üretimi, gelecek tahminleri ve renkli raporlama platformuna genel bir bakış.</p>
+    </div>
+
+    <!-- SLIDE 2: GENEL SUNUM ÖZETİ -->
+    <div class="slide">
+        <h2 class="slide-title">Botteks Platform <span>Yetenekleri</span></h2>
+        <p class="slide-subtitle">İş zekası ve veri analitiği süreçlerini kolaylaştıran temel yapılar</p>
+        <div class="three-cards-grid">
+            <div class="feature-card">
+                <div class="feature-icon-box">💬</div>
+                <div class="feature-card-title">Doğal Dille Analiz</div>
+                <div class="feature-card-desc">Karmaşık SQL sorguları yazmaya gerek kalmadan Türkçe sorular sorarak veritabanından anında bilgi alınır.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-box">📂</div>
+                <div class="feature-card-title">Esnek Veri Desteği</div>
+                <div class="feature-card-desc">Canlı veritabanı bağlantısının yanı sıra harici Excel ve CSV dosyaları yüklenerek hızlıca sorgulanabilir.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-box">🔮</div>
+                <div class="feature-card-title">Gelecek Tahmin Motoru</div>
+                <div class="feature-card-desc">Geçmiş veriler işlenerek gelecek döneme ait satış ve ciro projeksiyonları otomatik üretilir.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: AKILLI VERİ SORGULAMA VE RENKLİ EXCEL İHRAÇ RAPORU -->
+    <div class="slide">
+        <div class="split-layout">
+            <div class="split-content">
+                <h2>Veri Sorgulama &<br><span>Renkli Excel Raporlama</span></h2>
+                <p class="split-desc">
+                    Platform üzerinden üretilen tüm tablo yanıtları tek tıkla Excel formatında dışa aktarılabilir.<br><br>
+                    İhraç edilen dosyalar, **koyu lacivert sütun başlıkları** ve **otomatik sütun genişliği ayarlamaları** sayesinde tamamen okunaklı ve kurumsal standartlara uygun biçimde oluşturulur.
+                </p>
+            </div>
+            <div style="background:#111a33; border:1px solid rgba(255,255,255,0.12); border-radius:18px; padding:20px; box-shadow:0 20px 40px rgba(0,0,0,0.5);">
+                <div style="font-size:0.85rem; color:#94a3b8; margin-bottom:12px; font-weight:700;">📗 Renkli Excel İhraç Çıktısı (analiz_raporu.xlsx)</div>
+                <table class="excel-table-mock">
+                    <thead>
+                        <tr>
+                            <th>musteri_adi</th>
+                            <th>alt_marka_adi</th>
+                            <th>toplam_miktar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>LPP S.A.</td><td>Sinsay</td><td>75917</td></tr>
+                        <tr><td>C&A Mode GmbH</td><td>C&A Mode</td><td>75276</td></tr>
+                        <tr><td>H&M Hennes & Mauritz AB</td><td>H&M</td><td>32465</td></tr>
+                        <tr><td>Primark Limited</td><td>Primark</td><td>28790</td></tr>
+                        <tr><td>Primark Limited</td><td>Primark Kids</td><td>27974</td></tr>
+                        <tr><td>H&M Hennes & Mauritz AB</td><td>COS</td><td>22838</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: SÜTUN VE PASTA GRAFİK ÇIKTILARI -->
+    <div class="slide">
+        <h2 class="slide-title">Sütun & <span>Pasta Grafik Çıktıları</span></h2>
+        <p class="slide-subtitle">Miktar ve oran dağılımlarını görselleştiren analitik grafikler</p>
+        <div class="two-cols-grid">
+            
+            <!-- Sütun Grafik (Bar) -->
+            <div class="graphic-card">
+                <div class="card-header-title">📊 Sütun Grafik (toplam_miktar Dağılımı)</div>
+                <div class="bar-chart-container">
+                    <div class="bar-chart-title">toplam_miktar Dağılımı</div>
+                    <div class="bar-chart-flex">
+                        <div class="bar-col-item"><div class="bar-fill" style="height:95%; background:#7e3af2;"></div><span class="bar-label">Sinsay</span></div>
+                        <div class="bar-col-item"><div class="bar-fill" style="height:94%; background:#10b981;"></div><span class="bar-label">C&A Mode</span></div>
+                        <div class="bar-col-item"><div class="bar-fill" style="height:41%; background:#3b82f6;"></div><span class="bar-label">H&M</span></div>
+                        <div class="bar-col-item"><div class="bar-fill" style="height:36%; background:#f59e0b;"></div><span class="bar-label">Primark</span></div>
+                        <div class="bar-col-item"><div class="bar-fill" style="height:35%; background:#ec4899;"></div><span class="bar-label">Primark Kids</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pasta Grafik (Pie) -->
+            <div class="graphic-card">
+                <div class="card-header-title">🍰 Pasta Grafik (toplam_miktar Pasta Dağılımı)</div>
+                <div class="pie-chart-container">
+                    <div class="pie-chart-title">toplam_miktar Pasta Dağılımı</div>
+                    <svg viewBox="0 0 100 100" style="width:130px; height:130px;">
+                        <circle cx="50" cy="50" r="25" fill="none" stroke="#5eead4" stroke-width="50" stroke-dasharray="49.6 107.4" stroke-dashoffset="0"/>
+                        <circle cx="50" cy="50" r="25" fill="none" stroke="#fde047" stroke-width="50" stroke-dasharray="49.1 107.9" stroke-dashoffset="-49.6"/>
+                        <circle cx="50" cy="50" r="25" fill="none" stroke="#fb923c" stroke-width="50" stroke-dasharray="21.2 135.8" stroke-dashoffset="-98.7"/>
+                        <circle cx="50" cy="50" r="25" fill="none" stroke="#e879f9" stroke-width="50" stroke-dasharray="18.8 138.2" stroke-dashoffset="-119.9"/>
+                        <circle cx="50" cy="50" r="25" fill="none" stroke="#a3e635" stroke-width="50" stroke-dasharray="18.2 138.8" stroke-dashoffset="-138.7"/>
+                    </svg>
+                    <div class="pie-legend">
+                        <span style="font-weight:700; color:#0f172a;">■ Sinsay 31.6%</span>
+                        <span style="font-weight:700; color:#0f172a;">■ C&A Mode 31.3%</span>
+                        <span style="font-weight:700; color:#0f172a;">■ H&M 13.5%</span>
+                        <span style="font-weight:700; color:#0f172a;">■ Primark 12%</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SLIDE 5: ZAMAN EĞİLİMİ VE GELECEK TAHMİN ANALİZİ -->
+    <div class="slide">
+        <h2 class="slide-title">Çizgi Grafik & <span>Gelecek Tahmin Analizi</span></h2>
+        <p class="slide-subtitle">Zaman eğilimi ve yapay zeka destekli gelecek ciro projeksiyonu</p>
+        <div class="two-cols-grid">
+            
+            <!-- Çizgi Grafik -->
+            <div class="graphic-card">
+                <div class="card-header-title">📈 Çizgi Grafik (toplam_miktar Zaman Eğilimi)</div>
+                <div class="line-chart-container">
+                    <div class="line-chart-title">toplam_miktar Zaman Eğilimi</div>
+                    <svg viewBox="0 0 300 120" style="width:100%; height:150px;">
+                        <line x1="0" y1="100" x2="300" y2="100" stroke="#cbd5e1" stroke-width="1"/>
+                        <path d="M 10 15 L 90 20 L 170 75 L 230 82 L 290 85" fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round"/>
+                        <circle cx="10" cy="15" r="4.5" fill="#10b981"/>
+                        <circle cx="90" cy="20" r="4.5" fill="#10b981"/>
+                        <circle cx="170" cy="75" r="4.5" fill="#10b981"/>
+                        <circle cx="230" cy="82" r="4.5" fill="#10b981"/>
+                        <circle cx="290" cy="85" r="4.5" fill="#10b981"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Tahmin Analizi -->
+            <div class="graphic-card">
+                <div class="card-header-title">🔮 Gelecek Dönem Tahmin Analizi</div>
+                <div class="forecast-chart-container">
+                    <div class="line-chart-title">Gelecek Dönem Tahmin Analizi (ciro)</div>
+                    <svg viewBox="0 0 400 120" style="width:100%; height:150px;">
+                        <polygon points="170,90 170,30 220,15 270,25 320,10 370,15 390,5 390,100 170,100" fill="rgba(245,158,11,0.2)"/>
+                        <path d="M 10 70 L 40 45 L 70 60 L 100 20 L 130 80 L 170 90" fill="none" stroke="#3b82f6" stroke-width="3"/>
+                        <path d="M 170 90 L 200 50 L 230 65 L 260 45 L 290 60 L 320 40 L 350 70 L 390 55" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="5,3"/>
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SLIDE 6: VERİ KAYNAKLARI VE RAPORLAMA MODLARI (UPGRADED EXECUTIVE CARDS) -->
+    <div class="slide">
+        <h2 class="slide-title">Veri Kaynakları & <span>Raporlama Modları</span></h2>
+        <p class="slide-subtitle">Botteks platformunun desteklediği iki esnek çalışma modu</p>
+        
+        <div class="mode-cards-grid">
+            
+            <!-- Mode 1: Canlı Veritabanı -->
+            <div class="mode-card">
+                <div class="mode-card-header">
+                    <div class="mode-card-title">🗄️ Canlı Veritabanı Modu</div>
+                    <span class="mode-pill pill-blue">CANLI İLİŞKİSEL SİSTEM</span>
+                </div>
+                <ul class="mode-list">
+                    <li class="mode-item">
+                        <span class="mode-icon">💾</span>
+                        <div><strong>Veri Kaynağı:</strong> PostgreSQL / SQLite ilişkisel veritabanı altyapısı.</div>
+                    </li>
+                    <li class="mode-item">
+                        <span class="mode-icon">📊</span>
+                        <div><strong>Grafik Çeşitliliği:</strong> Sütun, Kalın Çizgi, Pasta ve Tahmin Grafikleri.</div>
+                    </li>
+                    <li class="mode-item">
+                        <span class="mode-icon">🔮</span>
+                        <div><strong>Gelecek Projeksiyonu:</strong> Yapay zeka destekli 90 günlük ciro ve satış tahmini.</div>
+                    </li>
+                    <li class="mode-item">
+                        <span class="mode-icon">📗</span>
+                        <div><strong>Rapor İhracı:</strong> Koyu Lacivert başlıkla renkli Excel (`.xlsx`) ve kurumsal PDF çıktısı.</div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mode 2: Excel / CSV Yükleme -->
+            <div class="mode-card">
+                <div class="mode-card-header">
+                    <div class="mode-card-title">📂 Excel / CSV Yükleme Modu</div>
+                    <span class="mode-pill pill-green">SÜRÜKLE - BIRAK ANALİZ</span>
+                </div>
+                <ul class="mode-list">
+                    <li class="mode-item">
+                        <span class="mode-icon">📄</span>
+                        <div><strong>Veri Kaynağı:</strong> Kullanıcının yüklediği harici `.xlsx` veya `.csv` dosyası.</div>
+                    </li>
+                    <li class="mode-item">
+                        <span class="mode-icon">📊</span>
+                        <div><strong>Grafik Çeşitliliği:</strong> Sütun, Kalın Çizgi ve Pasta Grafikleri.</div>
+                    </li>
+                    <li class="mode-item">
+                        <span class="mode-icon">🔍</span>
+                        <div><strong>Otomatik Algılama:</strong> Akıllı sütun isimleri ve veri tipleri otomatik eşlenir.</div>
+                    </li>
+                    <li class="mode-item">
+                        <span class="mode-icon">📗</span>
+                        <div><strong>Rapor İhracı:</strong> Koyu Lacivert başlıkla renkli Excel (`.xlsx`) ve kurumsal PDF çıktısı.</div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SLIDE 7: TEŞEKKÜR & İLETİŞİM -->
+    <div class="slide">
+        <div style="text-align:center; max-width:750px; margin:0 auto;">
+            <h1 class="hero-title" style="font-size:4rem;">Teşekkürler!</h1>
+            <p class="hero-subtitle" style="margin-top:15px;">Botteks BI & Analiz Platformu sunumunu incelediğiniz için teşekkür ederim.</p>
+            <div style="display:inline-flex; align-items:center; gap:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); padding:12px 30px; border-radius:9999px; margin-top:30px; font-size:0.95rem; color:#cbd5e1;">
+                <span>🌐 botteks.ai | localhost:8501</span>
+                <span>|</span>
+                <span>✉️ info@botteks.com</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Navigation Controls -->
+<div class="nav-bar">
+    <button class="btn-nav" onclick="prevSlide()">❮ Önceki</button>
+    <span class="slide-counter" id="counter">1 / 7</span>
+    <button class="btn-nav" onclick="nextSlide()">Sonraki ❯</button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('counter');
+
+    function updateSlides() {
+        slides.forEach((slide, idx) => {
+            slide.classList.toggle('active', idx === currentSlide);
+        });
+        counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+    }
+
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            updateSlides();
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlides();
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+    });
+</script>
+</body>
+</html>
