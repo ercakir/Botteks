@@ -1283,9 +1283,27 @@ def ask_ai_for_sql(user_prompt, active_filters=""):
             return sql
             
     # 3. Difflib Fuzzy Similarity Match (0.0005s)
-    matches = difflib.get_close_matches(norm_prompt, NORMALIZED_FAST_SQL_MAP.keys(), n=1, cutoff=0.65)
+    matches = difflib.get_close_matches(norm_prompt, NORMALIZED_FAST_SQL_MAP.keys(), n=1, cutoff=0.45)
     if matches:
         return NORMALIZED_FAST_SQL_MAP[matches[0]]
+
+    # 4. Smart Turkish Intent Engine (0.001s high performance fallback)
+    if "ay" in norm_prompt and ("siparis" in norm_prompt or "miktar" in norm_prompt or "trend" in norm_prompt):
+        return "SELECT STRFTIME('%Y-%m', s.tarih) AS ay, SUM(s.miktar) AS toplam_siparis_miktari FROM siparisler s GROUP BY ay ORDER BY ay;"
+    elif "ay" in norm_prompt and ("ciro" in norm_prompt or "satis" in norm_prompt or "fiyat" in norm_prompt):
+        return "SELECT STRFTIME('%Y-%m', s.tarih) AS ay, SUM(s.miktar * s.birim_fiyat) AS ciro FROM siparisler s GROUP BY ay ORDER BY ay;"
+    elif "yil" in norm_prompt and ("ciro" in norm_prompt or "satis" in norm_prompt):
+        return "SELECT STRFTIME('%Y', s.tarih) AS yil, SUM(s.miktar * s.birim_fiyat) AS toplam_ciro FROM siparisler s GROUP BY yil ORDER BY yil;"
+    elif "musteri" in norm_prompt and ("ciro" in norm_prompt or "en cok" in norm_prompt or "lider" in norm_prompt):
+        return "SELECT m.musteri_adi, SUM(s.miktar * s.birim_fiyat) AS ciro FROM siparisler s JOIN musteriler m ON s.musteri_id = m.id GROUP BY m.musteri_adi ORDER BY ciro DESC LIMIT 5;"
+    elif "marka" in norm_prompt:
+        return "SELECT ma.alt_marka_adi AS marka_adi, SUM(s.miktar) AS toplam_miktar FROM siparisler s JOIN musteri_alt_markalari ma ON s.musteri_alt_marka_id = ma.id GROUP BY ma.alt_marka_adi ORDER BY toplam_miktar DESC LIMIT 5;"
+    elif "kumas" in norm_prompt:
+        return "SELECT k.kumas_adi, SUM(s.miktar) AS toplam_miktar FROM siparisler s JOIN urunler u ON s.urun_kodu = u.urun_kodu JOIN kumaslar k ON u.kumas_id = k.id GROUP BY k.kumas_adi ORDER BY toplam_miktar DESC;"
+    elif "iptal" in norm_prompt:
+        return "SELECT m.musteri_adi, COUNT(*) AS iptal_sayisi FROM siparisler s JOIN musteriler m ON s.musteri_id = m.id WHERE s.urun_durumu = 'iptal' GROUP BY m.musteri_adi ORDER BY iptal_sayisi DESC;"
+    elif "tahsilat" in norm_prompt or "odeme" in norm_prompt:
+        return "SELECT STRFTIME('%Y-%m', o.odeme_tarihi) AS ay, SUM(o.miktar) AS toplam_tahsilat FROM odemeler o GROUP BY ay ORDER BY ay;"
                 
     system_instruction = f"""
 Sen PostgreSQL BI Veritabanı Uzmanısın.
