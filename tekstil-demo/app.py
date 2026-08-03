@@ -1259,7 +1259,6 @@ def generate_gemini_summary(df, user_prompt=""):
         return f"💡 **Executive BI Özeti**: Sorgunuza uygun **{total_rows}** adet kayıt detaylı olarak listelenmiştir. 🎉"
 
 
-@st.cache_data(ttl=3600, show_spinner=False)
 def ask_ai_for_sql(user_prompt, active_filters=""):
     import difflib
     norm_prompt = normalize_tr_text(user_prompt)
